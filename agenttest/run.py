@@ -163,6 +163,8 @@ def define(path_run):
         print("Win Rate        :", round(len(wins) / len(trade_returns) * 100, 2))
         print("Avg Win         :", round(np.mean(wins) * 100, 2) if wins else 0)
         print("Avg Loss        :", round(np.mean(losses) * 100, 2) if losses else 0)
+        
+
 
 
         # ================== PLOT ==================
@@ -192,25 +194,25 @@ def define(path_run):
         #plt.show()
         
 print("\n adanipower")
-define("data/csvfile/adanipower_2020_2025_daily.csv")
+define("csvfile/adanipower_2020_2025_daily.csv")
 
 print("\n bel")
-define("data/csvfile/bel_2020_2025_daily.csv")
+define("csvfile/bel_2020_2025_daily.csv")
 
 print("\n infy")
-define("data/csvfile/infy_2020_2025_daily.csv")
+define("csvfile/infy_2020_2025_daily.csv")
 
 print("\nitc")
-define("data/csvfile/itc_2020_2025_daily.csv")
+define("csvfile/itc_2020_2025_daily.csv")
 
 print("\nsail")
-define("data/csvfile/sail_2020_2025_daily.csv")
+define("csvfile/sail_2020_2025_daily.csv")
 
 print("\n bin")
-define("data/csvfile/sbin_2020_2025_daily.csv")
+define("csvfile/sbin_2020_2025_daily.csv")
 
 print("\n tatpower")
-define("data/csvfile/tatapower_2020_2025_daily.csv")
+define("csvfile/tatapower_2020_2025_daily.csv")
 
 print("\n wipro")
-define("data/csvfile/wipro_2020_2025_daily.csv")
+define("csvfile/wipro_2020_2025_daily.csv")

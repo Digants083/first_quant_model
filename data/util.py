@@ -71,7 +71,11 @@ def build_features(csv_path):
     # ================= VOLUME FILTER =================
     df['avg_volume_20'] = df['Volume'].rolling(20).mean()
 
-
+    df["dist_ema50"] = (df["Close"] - df["ema_50"]) / df["ema_50"]              # Distance from EMA
+    df["rsi_slope"] = df["rsi"].diff(5)                                        # RSI momentum slope
+    df["volatility"] = df["atr"] / df["Close"]                                 # Volatility regime
+    df["vol_contraction"] = df["volatility"] < df["volatility"].rolling(20).mean()
+    df["breakout"] = df["Close"] > df["High"].rolling(20).max().shift(1)  
     # ================= FINAL CLEAN =================
     df = df.dropna().reset_index(drop=True)
 
@@ -89,12 +93,12 @@ def build_features(csv_path):
 
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-folder_path = os.path.join(BASE_DIR, "data", "csvfile")
+#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#folder_path = os.path.join(BASE_DIR, "csvfile")
 
-for filename in os.listdir(folder_path):
+for filename in os.listdir("csvfile"):
     if filename.endswith(".csv"):
-        build_features(os.path.join(folder_path, filename))
+        build_features(os.path.join("csvfile", filename))
 
        
 
