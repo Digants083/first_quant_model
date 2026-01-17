@@ -147,11 +147,12 @@ def define(path_run):
 
 
         total_return = (cash - INITIAL_CAPITAL) / INITIAL_CAPITAL * 100
-        annual_return = total_return / 5
+        
 
 
         wins = [r for r in trade_returns if r > 0]
         losses = [r for r in trade_returns if r < 0]
+        cagr = ((cash/INITIAL_CAPITAL)**(1/5) - 1) * 100
 
         print("=========result==================")
         print("Staring Capital :",INITIAL_CAPITAL)
@@ -163,56 +164,56 @@ def define(path_run):
         print("Win Rate        :", round(len(wins) / len(trade_returns) * 100, 2))
         print("Avg Win         :", round(np.mean(wins) * 100, 2) if wins else 0)
         print("Avg Loss        :", round(np.mean(losses) * 100, 2) if losses else 0)
+        print("CAGR            :", round(cagr, 2), "%")
+
+
+
+        
+            # ================== QUANT STYLE PLOTS ==================
+        plt.style.use("default")
+
+        fig = plt.figure(figsize=(16, 10))
+        gs = fig.add_gridspec(3, 1, height_ratios=[2, 1, 1], hspace=0.25)
+
+        # ===== PRICE + SIGNALS =====
+        ax1 = fig.add_subplot(gs[0])
+        ax1.plot(df["Date"], df["Close"], label="Close", linewidth=1.5)
+        ax1.plot(df["Date"], df["ema_50"], label="EMA 50", linewidth=1.2)
+        ax1.plot(df["Date"], df["ema_200"], label="EMA 200", linewidth=1.2)
+
+        ax1.scatter(df["Date"].iloc[buy_x], df["Close"].iloc[buy_x], marker="^", s=80, label="Long", zorder=5)
+        ax1.scatter(df["Date"].iloc[sell_x], df["Close"].iloc[sell_x], marker="v", s=80, label="Short", zorder=5)
+        ax1.scatter(df["Date"].iloc[exit_x], df["Close"].iloc[exit_x], marker="x", s=70, label="Exit", zorder=5)
+
+        ax1.set_title("Tata Power | EMA + RSI + Volume Quant Strategy", fontsize=14, fontweight="bold")
+        ax1.set_ylabel("Price")
+        ax1.grid(True, alpha=0.3)
+        ax1.legend()
+
+        # ===== EQUITY CURVE =====
+        ax2 = fig.add_subplot(gs[1], sharex=ax1)
+        ax2.plot(df["Date"], df["capital"], linewidth=2)
+        ax2.axhline(INITIAL_CAPITAL, linestyle="--", alpha=0.5)
+
+        ax2.set_title("Equity Curve (Fixed ₹10,000 per trade)", fontsize=12, fontweight="bold")
+        ax2.set_ylabel("Capital")
+        ax2.grid(True, alpha=0.3)
+
+        # ===== RETURNS DISTRIBUTION =====
+        ax3 = fig.add_subplot(gs[2])
+        ax3.hist(trade_returns, bins=30, alpha=0.7)
+
+        ax3.set_title("Trade Return Distribution", fontsize=12, fontweight="bold")
+        ax3.set_xlabel("Return per Trade")
+        ax3.set_ylabel("Frequency")
+        ax3.grid(True, alpha=0.3)
+
+        plt.tight_layout()
+        plt.show()
+
         
 
-
-
-        # ================== PLOT ==================
-       
-       #plt.figure(figsize=(15, 10))
-
-
-        #plt.subplot(2, 1, 1)
-        #plt.plot(df["Close"], label="Close")
-        #plt.plot(df["ema_50"], label="EMA 50")
-        #plt.plot(df["ema_200"], label="EMA 200")
-        #plt.scatter(buy_x, buy_y, marker="^", color="green", s=80, label="Buy")
-        #plt.scatter(sell_x, sell_y, marker="v", color="red", s=80, label="Sell")
-        #plt.scatter(exit_x, exit_y, marker=">", color="purple", s=80, label="Exit")
-        #plt.legend()
-        #plt.title("Price + EMA + Trades")
-
-
-        #plt.subplot(2, 1, 2)
-        #plt.plot(df["Date"], df["capital"], color="black", linewidth=2, label="Capital Curve")
-        #plt.axhline(y=INITIAL_CAPITAL, color="red", linestyle="--", label="Initial Capital")
-        #plt.legend()
-        #plt.title("Equity Curve (Fixed 10k Per Trade, No Compounding)")
-
-
-        #plt.tight_layout()
-        #plt.show()
-        
-print("\n adanipower")
-define("csvfile/adanipower_2020_2025_daily.csv")
-
-print("\n bel")
-define("csvfile/bel_2020_2025_daily.csv")
-
-print("\n infy")
-define("csvfile/infy_2020_2025_daily.csv")
-
-print("\nitc")
-define("csvfile/itc_2020_2025_daily.csv")
-
-print("\nsail")
-define("csvfile/sail_2020_2025_daily.csv")
-
-print("\n bin")
-define("csvfile/sbin_2020_2025_daily.csv")
 
 print("\n tatpower")
 define("csvfile/tatapower_2020_2025_daily.csv")
 
-print("\n wipro")
-define("csvfile/wipro_2020_2025_daily.csv")
